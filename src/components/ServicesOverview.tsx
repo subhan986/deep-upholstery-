@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { Sparkles, Armchair, Layers, ShieldAlert, Target, ShieldCheck, ArrowRight } from 'lucide-react';
 import { CLEANING_SERVICES } from '../data/upholsteryData';
 
@@ -20,22 +21,33 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({ onSelectServ
     <section id="services" className="py-16 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Title */}
-        <div className="space-y-2 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="space-y-2 mb-12"
+        >
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B2559] tracking-tight">
             Our Professional Cleaning Services
           </h2>
           <p className="text-sm sm:text-base text-slate-600 font-medium max-w-2xl mx-auto">
             We offer a wide range of cleaning services to meet your needs, from carpets to commercial spaces.
           </p>
-        </div>
+        </motion.div>
 
         {/* 6 Icons Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {CLEANING_SERVICES.map((srv) => (
-            <div
+          {CLEANING_SERVICES.map((srv, index) => (
+            <motion.div
               key={srv.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
               onClick={() => onSelectServiceForQuote && onSelectServiceForQuote(srv.title)}
-              className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-between hover:shadow-md hover:border-cyan-500 transition cursor-pointer group text-center"
+              className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-between hover:shadow-lg hover:border-cyan-500 transition cursor-pointer group text-center"
             >
               <div className="p-4 rounded-2xl bg-cyan-50 border border-cyan-100 group-hover:bg-cyan-600 group-hover:text-white transition duration-300">
                 {React.cloneElement(iconMap[srv.iconName] as React.ReactElement, {
@@ -56,10 +68,11 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({ onSelectServ
                 <span>View Options</span>
                 <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition" />
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
 };
+

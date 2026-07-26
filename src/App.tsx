@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { BookingModal } from './components/BookingModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { LoadingScreen } from './components/LoadingScreen';
 
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
@@ -11,6 +13,7 @@ import { CleaningAreaPage } from './pages/CleaningAreaPage';
 import { ContactPage } from './pages/ContactPage';
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<string>('home');
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
   const [lockedQuote, setLockedQuote] = useState<any>(null);
@@ -25,7 +28,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-cyan-500 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-cyan-500 selection:text-white flex flex-col justify-between overflow-x-hidden">
+      {/* Initial Logo Loading Screen Animation */}
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingScreen onFinished={() => setIsLoading(false)} duration={1800} />
+        )}
+      </AnimatePresence>
+
       <div>
         {/* Persistent Header with distinct Page Navigation */}
         <Header
@@ -35,33 +45,43 @@ export default function App() {
           onOpenBooking={() => setIsBookingOpen(true)}
         />
 
-        {/* Dynamic Multi-Page Router Views */}
-        <main>
-          {currentPage === 'home' && (
-            <HomePage
-              onNavigate={handleNavigate}
-              onOpenBooking={() => setIsBookingOpen(true)}
-            />
-          )}
+        {/* Dynamic Multi-Page Router Views with Motion Page Transitions */}
+        <main className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentPage}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
+              {currentPage === 'home' && (
+                <HomePage
+                  onNavigate={handleNavigate}
+                  onOpenBooking={() => setIsBookingOpen(true)}
+                />
+              )}
 
-          {currentPage === 'about' && (
-            <AboutPage onNavigate={handleNavigate} />
-          )}
+              {currentPage === 'about' && (
+                <AboutPage onNavigate={handleNavigate} />
+              )}
 
-          {currentPage === 'services' && (
-            <ServicesPage
-              onNavigate={handleNavigate}
-              onLockInQuote={handleLockInQuote}
-            />
-          )}
+              {currentPage === 'services' && (
+                <ServicesPage
+                  onNavigate={handleNavigate}
+                  onLockInQuote={handleLockInQuote}
+                />
+              )}
 
-          {currentPage === 'cleaning-area' && (
-            <CleaningAreaPage onNavigate={handleNavigate} />
-          )}
+              {currentPage === 'cleaning-area' && (
+                <CleaningAreaPage onNavigate={handleNavigate} />
+              )}
 
-          {currentPage === 'contact' && (
-            <ContactPage onLockInQuote={handleLockInQuote} />
-          )}
+              {currentPage === 'contact' && (
+                <ContactPage onLockInQuote={handleLockInQuote} />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </main>
       </div>
 
@@ -83,3 +103,4 @@ export default function App() {
     </div>
   );
 }
+
