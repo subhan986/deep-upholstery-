@@ -1,0 +1,6 @@
+{
+  "name": "Restore DEEP Carpet & Upholstery Cleaning",
+  "description": "Professional carpet, rug, and upholstery extraction cleaning in Banbury with instant quotes, before & after transformations, and AI stain diagnostics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
