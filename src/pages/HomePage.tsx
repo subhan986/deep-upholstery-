@@ -23,20 +23,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         }
       }} />
 
-      {/* 2. Our Professional Cleaning Services */}
+      {/* 2. See the Transformation (Before / After) */}
+      <BeforeAfterSlider onSelectProjectForQuote={() => {
+        const el = document.getElementById('quote-calculator');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }} />
+
+      {/* 3. Our Professional Cleaning Services */}
       <ServicesOverview onSelectServiceForQuote={() => {
         const el = document.getElementById('quote-calculator');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }} />
 
-      {/* 3. Request A Free Quote */}
+      {/* 4. Request A Free Quote Calculator */}
       <QuoteCalculator />
-
-      {/* 4. See the Transformation (Before / After) */}
-      <BeforeAfterSlider onSelectProjectForQuote={() => {
-        const el = document.getElementById('quote-calculator');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }} />
 
       {/* 5. Customer Reviews (EXCELLENT 5-Star Reviews) */}
       <ReviewsAndGallery />
